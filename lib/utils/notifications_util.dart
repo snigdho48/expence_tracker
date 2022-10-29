@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:get/get.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-
-import '../pages/destinatio_page.dart';
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
 
 class NotificationService {
   // Singleton pattern
@@ -19,6 +15,7 @@ class NotificationService {
   NotificationService._internal();
 
   static const channelId = "1";
+  final BehaviorSubject<String> behaviorSubject = BehaviorSubject();
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -58,7 +55,10 @@ class NotificationService {
       android: androidInitializationSettings,
       iOS: iOSInitializationSettings,
     );
-
+    final details = await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+    if (details != null && details.didNotificationLaunchApp) {
+      behaviorSubject.add(details.payload!);
+    }
     // *** Initialize timezone here ***
     tz.initializeTimeZones();
 
@@ -111,7 +111,11 @@ class NotificationService {
     );
     print('${payload} is paload');
   }
-
+  void selectNotification(String? payload) {
+    if (payload != null && payload.isNotEmpty) {
+      behaviorSubject.add(payload);
+    }
+  }
   Future<void> cancelNotification(int id) async {
     await flutterLocalNotificationsPlugin.cancel(id);
   }

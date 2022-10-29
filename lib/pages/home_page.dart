@@ -1,18 +1,15 @@
-import 'dart:convert';
-
-import 'package:expence_tracker/custom_list/helper_function&list.dart';
 import 'package:expence_tracker/pages/expense_add_page.dart';
-import 'package:expence_tracker/pages/lone_add_page.dart';
+import 'package:expence_tracker/pages/loan_add.dart';
+import 'package:expence_tracker/pages/loan_page.dart';
 import 'package:expence_tracker/pages/multi_screen_pages.dart';
 import 'package:expence_tracker/providers/expence_provider.dart';
 import 'package:expence_tracker/providers/lone_provider.dart';
-import 'package:expence_tracker/providers/multi_screen_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import '../utils/notifications_util.dart';
 import '../utils/pie_cart.dart';
-import 'lone_details.dart';
+import 'destinatio_page.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = "/homepage";
@@ -24,11 +21,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
+  late final NotificationService notificationService;
   @override
-  void initState(){
+  void initState() {
+    notificationService = NotificationService();
+    listenToNotificationStream();
+    notificationService.init();
     super.initState();
   }
+
+  void listenToNotificationStream() =>
+      notificationService.behaviorSubject.listen((payload) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DetailsPage(payload: payload)));
+      });
+
+
   @override
   void didChangeDependencies() {
     Provider.of<ExpenceProvider>(context,listen: false).getAllExpence();
@@ -64,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                   )
               ),
               onPressed: (){
-                Navigator.pushNamed(context, LoneDetailsPage.routeName);
+                Navigator.pushNamed(context, LoanPage.routeName);
               },
               child:const Text("Show Lone")
           )
@@ -162,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                               )
                           ),
                           onPressed: (){
-                            Navigator.pushNamed(context, LoneAddPage.routeName);
+                            Navigator.pushNamed(context, LoanAdd.routeName);
                           },
                           child:const Text("Add Lone")
                       ),

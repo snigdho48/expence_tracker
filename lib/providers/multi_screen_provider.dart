@@ -10,7 +10,7 @@ class MultiScreenProvider extends ChangeNotifier{
   int total=0;
 
   void getExpence(String catagory)async{
-    ExpenceList=await DbHelper.getFoodExpence(catagory);
+    ExpenceList=await DbHelper.getExpence(catagory);
     notifyListeners();
 
   }

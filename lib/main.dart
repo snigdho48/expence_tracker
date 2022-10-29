@@ -1,18 +1,19 @@
 
+import 'package:expence_tracker/pages/destinatio_page.dart';
 import 'package:expence_tracker/pages/expense_add_page.dart';
 import 'package:expence_tracker/pages/home_page.dart';
 import 'package:expence_tracker/pages/launcher_page.dart';
+import 'package:expence_tracker/pages/loan_add.dart';
+import 'package:expence_tracker/pages/loan_page.dart';
 import 'package:expence_tracker/pages/login_page.dart';
 import 'package:expence_tracker/pages/multi_screen_pages.dart';
+import 'package:expence_tracker/pages/multipages/food_expence.dart';
 import 'package:expence_tracker/providers/expence_provider.dart';
 import 'package:expence_tracker/providers/lone_provider.dart';
 import 'package:expence_tracker/providers/multi_screen_provider.dart';
 import 'package:expence_tracker/providers/user_provider.dart';
-import 'package:expence_tracker/pages/lone_add_page.dart';
-import 'package:expence_tracker/pages/lone_details.dart';
 import 'package:expence_tracker/utils/notifications_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 NotificationService notificationService = NotificationService();
 
@@ -53,11 +54,11 @@ class MyApp extends StatelessWidget {
         LoginPage.routeName:(context)=>const LoginPage(),
         HomePage.routeName:(context)=>const HomePage(),
         ExpenseAddPage.routeName:(context)=>const ExpenseAddPage(),
-        LoneAddPage.routeName:(context)=>const LoneAddPage(),
-        LoneDetailsPage.routeName:(context)=>const LoneDetailsPage(),
+        LoanPage.routeName:(context)=>LoanPage(),
+        LoanAdd.routeName:(context)=>const LoanAdd(),
         LauncherPage.routeName:(context)=>const LauncherPage(),
         MultiScreenPages.routeName:(context)=>const MultiScreenPages(),
-
+        DetailsPage.routeName:(context)=>DetailsPage(payload: 'payload')
       },
 
     );
